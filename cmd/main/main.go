@@ -9,6 +9,15 @@ import (
 	"github.com/rs/zerolog/log"
 )
 func init(){
+	// Load the config
+	err:=config.LoadConfig()
+	if err!=nil{
+		log.Panic().Err(err).Msg("Error while loading the config")
+	}
+	log.Info().Msg("Config loaded successfully")
+	log.Debug().Msg("Config: Port: "+config.Configs.Port)
+
+
 	// Load the logger
 	config.LoadLogger()
 }
@@ -23,8 +32,8 @@ func main(){
 	routes.LoadRoutes(r)
 
 	// Start the server
-	log.Debug().Msg("Starting the server")
-	err:=http.ListenAndServe(":8080",r)
+	log.Info().Msg("Starting the server on port "+config.Configs.Port+"...")
+	err:=http.ListenAndServe(":"+config.Configs.Port,r)
 	if err!=nil{
 		log.Panic().Err(err).Msg("Error while starting the server")
 	}
