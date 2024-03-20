@@ -14,20 +14,10 @@ import (
 
 func init(){
 	// Load the configs from env and config.yaml
-	err:=config.LoadConfig()
-	if err!=nil{
-		log.Panic().Err(err).Msg("Error while loading the config")
-	}
+	config.LoadConfig()
+	
 	// Load the logger
 	config.LoadLogger()
-
-	// Log the successful loading of the config
-	log.Info().Msg("Config loaded successfully")
-	log.Debug().Msg("Config: Port: "+config.Configs.Port)
-	log.Debug().Msg("Config: JWT Secret: "+config.Configs.JWTSecret)
-	log.Debug().Msg("Config: Postgres URI: "+config.Configs.PostgresURI)
-	log.Debug().Msg("Config: Log Level: "+config.Configs.LogLevel)
-	log.Debug().Msg("Config: Log File: "+config.Configs.LogFile)
 
 	
 	// Connect to the database

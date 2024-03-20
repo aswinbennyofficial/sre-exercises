@@ -11,7 +11,7 @@ import (
 
 var TokenAuth *jwtauth.JWTAuth
 
-// InitJWT is a function that initializes the JWT
+// InitJWT is a function that initializes the JWT middleware feature with JWT secret
 func InitJWT() {
 	TokenAuth = jwtauth.New("HS256", []byte(config.Configs.JWTSecret), nil)
 	log.Info().Msg("JWT initialized")

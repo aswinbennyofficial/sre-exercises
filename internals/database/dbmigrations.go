@@ -8,22 +8,21 @@ import (
  
 )
 
-// MigrateDB performs database migrations using pgx.Conn
+// MigrateDB performs database migrations using go-migrate package.
+// Migration scripts are saved in /internals/database/migration.
 func MigrateDB() {
-    
-	
-
 	driver, err := postgres.WithInstance(SQLDB, &postgres.Config{})
 	if err != nil {
-		log.Fatal().Err(err).Msg("Error while creating the driver")
+		log.Fatal().Err(err).Caller().Msg("Error while creating the driver")
 	}
     m, err := migrate.NewWithDatabaseInstance(
         "file://./internals/database/migration",
         "postgres", driver)
     if err!=nil{
-		log.Fatal().Err(err).Msg("Error while creating the migration instance")
+		log.Fatal().Err(err).Caller().Msg("Error while creating the migration instance")
 	}
 	m.Up()
+
 	log.Info().Msg("Database migrated successfully")
 
 }
