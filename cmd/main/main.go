@@ -30,6 +30,9 @@ func init(){
 	
 	// Connect to the database
 	database.ConnectDB()
+	database.MigrateDB()
+
+	//
 	
 }
 
