@@ -15,6 +15,7 @@ var Configs models.Config
 func LoadConfig(){
 	// Set the path to the YAML file
     viper.SetConfigFile("config.yaml")
+	// Read the config file
 	err := viper.ReadInConfig()
     if err != nil {
         log.Fatal().Err(err).Caller().Msg("Error reading the config file")

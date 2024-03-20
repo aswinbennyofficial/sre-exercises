@@ -9,8 +9,9 @@ import (
 )
 
 var (
-    // AppLogFile
+    // appLogFile is a file pointer to the local log file
     appLogFile *os.File
+    // appLogger is a logger instance for all log levels
     appLogger  zerolog.Logger
 )
 
@@ -22,6 +23,7 @@ func LoadLogger() {
     // remove log level "debug" to disable debug logs
     log.Info().Msg("Log level is "+Configs.LogLevel)
 
+    // Set the log level
     if Configs.LogLevel == "debug" {
         // Logs debugLevel and anything above
         zerolog.SetGlobalLevel(zerolog.DebugLevel)
@@ -39,10 +41,10 @@ func LoadLogger() {
     // Create multi-level writer to write to both file and stdout
     multiLevelWriter := zerolog.MultiLevelWriter(AppLogFile, os.Stdout)
 
-    // Creat// Close log filee logger instance for all log levels
+    // Create logger instance for all log levels
     appLogger = zerolog.New(multiLevelWriter).With().Timestamp().Logger()
 
-    // Set global logger
+    // Set the configured logger as the default logger
     log.Logger = appLogger
 }
 

@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	
+	// SQLDB is a pointer to the SQL database connection object
 	SQLDB  *sql.DB
+	// PgxConn is a pointer to the PostgreSQL connection object
 	PgxConn *pgx.Conn
 )
 
@@ -22,7 +23,8 @@ func ConnectDB() {
 	if err != nil {
 		log.Fatal().Err(err).Msg("Error parsing PostgreSQL config")
 	}
-
+	
+	// Connect to PostgreSQL using pgx to get pgx.Conn object
 	pgxconn, err := pgx.ConnectConfig(context.Background(), pgxConfig)
 	if err != nil {
 		log.Fatal().Err(err).Caller().Msg("Error connecting to PostgreSQL database via pgx")
@@ -31,7 +33,7 @@ func ConnectDB() {
 
 
 
-	// Open a connection to the SQL database using database/sql
+	// connect to SQL database using database/sql to get *sql.DB object for migrations
 	sqlConn, err := sql.Open("postgres", config.Configs.PostgresURI)
 	if err != nil {
 		log.Fatal().Err(err).Caller().Msg("Error connecting to SQL database via database/sql")
@@ -46,6 +48,7 @@ func ConnectDB() {
 		log.Fatal().Err(err).Msg("Error while pinging PostgreSQL database")
 	}
 
+	
 	log.Info().Msg("Connected to PostgreSQL")
 }
 

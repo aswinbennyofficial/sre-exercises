@@ -24,7 +24,7 @@ func init(){
 	database.ConnectDB()
 	database.MigrateDB()
 
-	//
+	
 	
 }
 
