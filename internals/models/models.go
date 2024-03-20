@@ -5,7 +5,8 @@ type Config struct {
 	Port string
 	JWTSecret string
 	PostgresURI string
-	LogLevel string 
+	LogLevel string
+	LogFile string 
 
 	
 }

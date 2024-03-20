@@ -26,6 +26,8 @@ func init(){
 	log.Debug().Msg("Config: Port: "+config.Configs.Port)
 	log.Debug().Msg("Config: JWT Secret: "+config.Configs.JWTSecret)
 	log.Debug().Msg("Config: Postgres URI: "+config.Configs.PostgresURI)
+	log.Debug().Msg("Config: Log Level: "+config.Configs.LogLevel)
+	log.Debug().Msg("Config: Log File: "+config.Configs.LogFile)
 
 	
 	// Connect to the database

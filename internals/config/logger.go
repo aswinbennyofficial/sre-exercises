@@ -23,7 +23,7 @@ func LoadLogger() {
     }
    
 
-    AppLogFile, err := os.OpenFile("logs/app.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+    AppLogFile, err := os.OpenFile(Configs.LogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
     if err != nil {
         log.Fatal().Err(err).Msg("Failed to open app log file")
     }
@@ -38,6 +38,7 @@ func LoadLogger() {
     log.Logger = AppLogger
 }
 
+// CloseLogFiles is a function that closes the opened log files
 func CloseLogFiles() {
     // Close log file
     if AppLogFile != nil {

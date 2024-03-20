@@ -19,6 +19,7 @@ func LoadConfig()(error) {
 	Configs.JWTSecret = viper.GetString("jwt.secret")
 	Configs.PostgresURI = viper.GetString("postgres.uri")
 	Configs.LogLevel = viper.GetString("logs.level")
+	Configs.LogFile = viper.GetString("logs.file")
 
 	return nil
 }

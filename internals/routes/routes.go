@@ -15,7 +15,7 @@ func LoadRoutes(r *chi.Mux) {
 	// Load jwt
 	middleware.InitJWT()
   
-	r.Group(func(r chi.Router) {
+	r.Route("/v1",func(r chi.Router) {
 		r.Use(httprate.LimitByIP(150, 1*time.Minute))
 	  	r.Use(jwtauth.Verifier(middleware.TokenAuth))
 	  	r.Use(jwtauth.Authenticator(middleware.TokenAuth))
