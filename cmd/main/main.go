@@ -4,10 +4,14 @@ import (
 	"net/http"
 
 	"github.com/aswinbennyofficial/sre-exercises/internals/config"
+	// "github.com/aswinbennyofficial/sre-exercises/internals/database"
 	"github.com/aswinbennyofficial/sre-exercises/internals/routes"
 	"github.com/go-chi/chi/v5"
 	"github.com/rs/zerolog/log"
 )
+
+
+
 func init(){
 	// Load the configs from env and config.yaml
 	err:=config.LoadConfig()
@@ -21,15 +25,20 @@ func init(){
 	log.Info().Msg("Config loaded successfully")
 	log.Debug().Msg("Config: Port: "+config.Configs.Port)
 	log.Debug().Msg("Config: JWT Secret: "+config.Configs.JWTSecret)
+	log.Debug().Msg("Config: Postgres URI: "+config.Configs.PostgresURI)
 
 	
-
+	// Connect to the database
+	// database.ConnectDB()
 	
 }
 
 func main(){
 	// Close the log files
 	defer config.CloseLogFiles()
+	// Close the database connection
+	// defer database.CloseDB()
+
 
 	// Initialize Chi router
 	r := chi.NewRouter()
