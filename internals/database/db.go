@@ -22,6 +22,8 @@ func ConnectDB() {
 	if err!=nil{
 		log.Fatal().Err(err).Msg("Error while pinging the database")
 	}
+
+	log.Info().Msg("Connected to the database")
 }
 
 func CloseDB(){

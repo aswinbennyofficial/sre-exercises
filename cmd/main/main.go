@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/aswinbennyofficial/sre-exercises/internals/config"
-	// "github.com/aswinbennyofficial/sre-exercises/internals/database"
+	"github.com/aswinbennyofficial/sre-exercises/internals/database"
 	"github.com/aswinbennyofficial/sre-exercises/internals/routes"
 	"github.com/go-chi/chi/v5"
 	"github.com/rs/zerolog/log"
@@ -29,7 +29,7 @@ func init(){
 
 	
 	// Connect to the database
-	// database.ConnectDB()
+	database.ConnectDB()
 	
 }
 
@@ -37,7 +37,7 @@ func main(){
 	// Close the log files
 	defer config.CloseLogFiles()
 	// Close the database connection
-	// defer database.CloseDB()
+	defer database.CloseDB()
 
 
 	// Initialize Chi router
