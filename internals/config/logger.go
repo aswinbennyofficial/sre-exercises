@@ -21,6 +21,7 @@ func LoadLogger() {
     }else{
         zerolog.SetGlobalLevel(zerolog.InfoLevel)
     }
+   
 
     AppLogFile, err := os.OpenFile("logs/app.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
     if err != nil {
