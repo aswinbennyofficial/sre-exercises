@@ -9,17 +9,22 @@ import (
 	"github.com/rs/zerolog/log"
 )
 func init(){
-	// Load the config
+	// Load the configs from env and config.yaml
 	err:=config.LoadConfig()
 	if err!=nil{
 		log.Panic().Err(err).Msg("Error while loading the config")
 	}
-	log.Info().Msg("Config loaded successfully")
-	log.Debug().Msg("Config: Port: "+config.Configs.Port)
-
-
 	// Load the logger
 	config.LoadLogger()
+
+	// Log the successful loading of the config
+	log.Info().Msg("Config loaded successfully")
+	log.Debug().Msg("Config: Port: "+config.Configs.Port)
+	log.Debug().Msg("Config: JWT Secret: "+config.Configs.JWTSecret)
+
+	
+
+	
 }
 
 func main(){
