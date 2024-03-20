@@ -3,9 +3,11 @@ module github.com/aswinbennyofficial/sre-exercises
 go 1.21.8
 
 require (
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.2.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-chi/chi/v5 v5.0.12 // indirect
+	github.com/go-chi/httprate v0.9.0 // indirect
 	github.com/go-chi/jwtauth/v5 v5.3.1 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
