@@ -32,6 +32,7 @@ func LoadRoutes(r *chi.Mux) {
 			w.Write([]byte(`{"message":"Hello, World!"}`))
 	  	})
 		r.Post("/student",handlers.CreateNewStudent)
+		r.Get("/students",handlers.GetAllStudents)
 	})
   
 

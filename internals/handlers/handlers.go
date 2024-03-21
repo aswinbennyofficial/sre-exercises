@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 
@@ -37,4 +38,40 @@ func CreateNewStudent(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(`{"message":"New student created"}`))
+}
+
+
+func GetAllStudents(w http.ResponseWriter, r *http.Request){
+	// Query the database for all students
+	sqlStatement := `SELECT id, name, phone, address FROM Student`
+	rows, err := database.PgxPool.Query(context.Background(), sqlStatement)
+	if err != nil {
+		log.Error().Err(err).Caller().Msg("Error querying the database for students")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	students := []models.Student{}
+	for rows.Next() {
+		var student models.Student
+		err := rows.Scan(&student.ID, &student.Name, &student.Phone, &student.Address)
+		if err != nil {
+			log.Error().Err(err).Caller().Msg("Error scanning student row")
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		students = append(students, student)
+	}
+
+	// Convert the students slice to JSON
+	studentsJSON, err := json.Marshal(students)
+	if err != nil {
+		log.Error().Err(err).Caller().Msg("Error marshalling students to JSON")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(studentsJSON)
 }
