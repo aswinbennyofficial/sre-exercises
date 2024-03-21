@@ -35,5 +35,6 @@ func CreateNewStudent(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(`{"message":"New student created"}`))
 }
