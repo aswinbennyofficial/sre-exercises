@@ -3,11 +3,13 @@ package routes
 import (
 	"net/http"
 
+	"time"
+
+	"github.com/aswinbennyofficial/sre-exercises/internals/handlers"
 	"github.com/aswinbennyofficial/sre-exercises/internals/middleware"
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/jwtauth/v5"
 	"github.com/go-chi/httprate"
-	"time"
+	"github.com/go-chi/jwtauth/v5"
 )
 
 // LoadRoutes is a function that loads all the http routes for the application
@@ -26,11 +28,10 @@ func LoadRoutes(r *chi.Mux) {
   
 	 	 // Protected routes
 	  	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-			
 			r.Header.Set("Content-Type", "application/json")
 			w.Write([]byte(`{"message":"Hello, World!"}`))
-	
-	  })
+	  	})
+		r.Post("/student",handlers.CreateNewStudent)
 	})
   
 
