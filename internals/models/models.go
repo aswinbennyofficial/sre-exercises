@@ -9,5 +9,12 @@ type Config struct {
 	LogLevel string
 	LogFile string 
 
-	
+}
+
+// Student is a struct that stores the details of a student
+type Student struct {
+	ID int `json:"id"`
+	Name string `json:"name"`
+	Phone string `json:"phone"`
+	Address string `json:"address"`
 }

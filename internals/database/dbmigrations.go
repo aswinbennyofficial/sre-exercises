@@ -24,7 +24,15 @@ func MigrateDB() {
 		log.Fatal().Err(err).Caller().Msg("Error while creating the migration instance")
 	}
 	// Migrate the database up
-	m.Up()
+	err=m.Up()
+	if err!=nil{
+		if err.Error()=="no change"{
+			log.Info().Msg("No changes in the database")
+			return
+		}else{
+		log.Fatal().Err(err).Caller().Msg("Error while migrating the database")
+		}
+	}
 
 	log.Info().Msg("Database migrated successfully")
 
