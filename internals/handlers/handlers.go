@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	// "strings"
 
 	"github.com/aswinbennyofficial/sre-exercises/internals/database"
 	"github.com/aswinbennyofficial/sre-exercises/internals/models"
@@ -130,3 +129,27 @@ func DeleteStudent(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
+
+func UpdateStudent(w http.ResponseWriter, r *http.Request) {
+	// Get the student id from the URL
+	studentID := chi.URLParam(r, "id")
+
+	var student models.Student
+	err := json.NewDecoder(r.Body).Decode(&student)
+	if err != nil {
+		log.Error().Err(err).Caller().Msg("Error decoding the request body")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// Update the student in the database
+	sqlStatement := `UPDATE Student SET name=$1, phone=$2, address=$3 WHERE id=$4`
+	_, err = database.PgxPool.Exec(context.Background(), sqlStatement, student.Name, student.Phone, student.Address, studentID)
+	if err != nil {
+		log.Error().Err(err).Caller().Msg("Error updating student in the database")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	log.Debug().Msgf("Student with id %s updated", studentID)
+	w.WriteHeader(http.StatusNoContent)
+}

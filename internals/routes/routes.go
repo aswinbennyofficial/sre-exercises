@@ -31,7 +31,7 @@ func LoadRoutes(r *chi.Mux) {
 		r.Get("/students",handlers.GetAllStudents)
 		r.Get("/students/{id}",handlers.GetStudent)
 		r.Delete("/students/{id}",handlers.DeleteStudent)
-		// r.Patch("/students/{id}",handlers.UpdateStudent)
+		r.Put("/students/{id}",handlers.UpdateStudent)
 	})
   
 
