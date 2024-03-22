@@ -29,7 +29,9 @@ func LoadRoutes(r *chi.Mux) {
 	 	 // Protected routes
 		r.Post("/student",handlers.CreateNewStudent)
 		r.Get("/students",handlers.GetAllStudents)
-		r.Get("/student/{id}",handlers.GetStudent)
+		r.Get("/students/{id}",handlers.GetStudent)
+		r.Delete("/students/{id}",handlers.DeleteStudent)
+		// r.Patch("/students/{id}",handlers.UpdateStudent)
 	})
   
 

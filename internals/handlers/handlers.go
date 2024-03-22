@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	// "strings"
 
 	"github.com/aswinbennyofficial/sre-exercises/internals/database"
 	"github.com/aswinbennyofficial/sre-exercises/internals/models"
@@ -36,7 +37,10 @@ func CreateNewStudent(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
+	log.Debug().Msg("New student created")
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte(`{"message":"New student created"}`))
 }
 
@@ -104,7 +108,25 @@ func GetStudent(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
+	
+	log.Debug().Msgf("Student with id %s found", studentID)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(studentJSON)
 }
+
+func DeleteStudent(w http.ResponseWriter, r *http.Request) {
+	// Get the student id from the URL
+	studentID := chi.URLParam(r, "id")
+
+	// Delete the student from the database
+	sqlStatement := `DELETE FROM Student WHERE id=$1`
+	_, err := database.PgxPool.Exec(context.Background(), sqlStatement, studentID)
+	if err != nil {
+		log.Error().Err(err).Caller().Msg("Error deleting student from the database")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	log.Debug().Msgf("Student with id %s deleted", studentID)
+	w.WriteHeader(http.StatusNoContent)
+}
+
