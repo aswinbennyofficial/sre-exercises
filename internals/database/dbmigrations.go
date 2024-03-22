@@ -14,14 +14,14 @@ func MigrateDB() {
 	// Create a new instance of the postgres driver
 	driver, err := postgres.WithInstance(SQLDB, &postgres.Config{})
 	if err != nil {
-		log.Fatal().Err(err).Caller().Msg("Error while creating the driver")
+		log.Panic().Err(err).Caller().Msg("Error while creating the driver")
 	}
 	// Create a new instance of the migration
     m, err := migrate.NewWithDatabaseInstance(
         "file://./internals/database/migration",
         "postgres", driver)
     if err!=nil{
-		log.Fatal().Err(err).Caller().Msg("Error while creating the migration instance")
+		log.Panic().Err(err).Caller().Msg("Error while creating the migration instance")
 	}
 	// Migrate the database up
 	err=m.Up()
@@ -30,7 +30,7 @@ func MigrateDB() {
 			log.Info().Msg("No changes in the database")
 			return
 		}else{
-		log.Fatal().Err(err).Caller().Msg("Error while migrating the database")
+		log.Panic().Err(err).Caller().Msg("Error while migrating the database")
 		}
 	}
 

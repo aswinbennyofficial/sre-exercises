@@ -24,21 +24,21 @@ func ConnectDB() {
 	// Connect to PostgreSQL using pgx to get pgx.Conn object
 	pgxpool, err := pgxpool.New(context.Background(), config.Configs.PostgresURI)
 	if err != nil {
-		log.Fatal().Err(err).Caller().Msg("Error connecting to PostgreSQL database via pgx")
+		log.Panic().Err(err).Caller().Msg("Error connecting to PostgreSQL database via pgx")
 	}
 	PgxPool = pgxpool
 
 	// connect to SQL database using database/sql to get *sql.DB object for migrations
 	sqlConn, err := sql.Open("postgres", config.Configs.PostgresURI)
 	if err != nil {
-		log.Fatal().Err(err).Caller().Msg("Error connecting to SQL database via database/sql")
+		log.Panic().Err(err).Caller().Msg("Error connecting to SQL database via database/sql")
 	}
 	SQLDB = sqlConn
 
 	// Ping PostgreSQL
 	err = pgxpool.Ping(context.Background())
 	if err != nil {
-		log.Fatal().Err(err).Msg("Error while pinging PostgreSQL database")
+		log.Panic().Err(err).Msg("Error while pinging PostgreSQL database")
 	}
 
 	log.Info().Msg("Connected to PostgreSQL")
@@ -50,8 +50,9 @@ func CloseDB() {
 		err := SQLDB.Close()
 		if err != nil {
 			log.Error().Err(err).Caller().Msg("Error closing SQL database connection")
+		}else{
+			log.Info().Msg("SQLDB connection closed")
 		}
-		log.Info().Msg("SQLDB connection closed")
 	}
 
 	if PgxPool != nil {
