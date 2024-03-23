@@ -48,9 +48,12 @@ func GetAllStudents(w http.ResponseWriter, r *http.Request) {
 	// Parse query parameters for pagination
 	limit := 10 // Default number of items per page
 	offset := 0 // Default offset
+	sortBy := "id" // Default sorting criteria
+
 
 	limitStr := r.URL.Query().Get("limit")
 	offsetStr := r.URL.Query().Get("offset")
+	sortByStr := r.URL.Query().Get("sort")
 
 	// If limit is provided and is a positive integer, set it
 	if limitStr != "" {
@@ -68,8 +71,20 @@ func GetAllStudents(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	if sortByStr != "" {
+		// Validate the sorting criteria to prevent SQL injection
+		// Supported sorting criteria: id, name
+		validSortColumns := map[string]bool{"id": true, "name": true}
+		// If the sorting criteria is valid, set it 
+		if _, ok := validSortColumns[sortByStr]; ok {
+			sortBy = sortByStr
+		} else {
+			log.Warn().Msgf("Invalid sort criteria: %s", sortByStr)
+		}
+	}
+
 	// Query the database for students with pagination
-	sqlStatement := `SELECT id, name, phone, address FROM Student LIMIT $1 OFFSET $2`
+	sqlStatement := `SELECT id, name, phone, address FROM Student ORDER BY `+sortBy +` LIMIT $1 OFFSET $2 `
 	rows, err := database.PgxPool.Query(context.Background(), sqlStatement, limit, offset)
 	if err != nil {
 		log.Error().Err(err).Caller().Msg("Error querying the database for students")
