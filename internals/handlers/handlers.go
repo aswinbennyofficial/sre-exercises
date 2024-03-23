@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/aswinbennyofficial/sre-exercises/internals/database"
 	"github.com/aswinbennyofficial/sre-exercises/internals/models"
@@ -44,9 +45,32 @@ func CreateNewStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllStudents(w http.ResponseWriter, r *http.Request) {
-	// Query the database for all students
-	sqlStatement := `SELECT id, name, phone, address FROM Student`
-	rows, err := database.PgxPool.Query(context.Background(), sqlStatement)
+	// Parse query parameters for pagination
+	limit := 10 // Default number of items per page
+	offset := 0 // Default offset
+
+	limitStr := r.URL.Query().Get("limit")
+	offsetStr := r.URL.Query().Get("offset")
+
+	// If limit is provided and is a positive integer, set it
+	if limitStr != "" {
+		l, err := strconv.Atoi(limitStr)
+		if err == nil && l > 0 {
+			limit = l
+		}
+	}
+
+	// If offset is provided and is a positive integer, set it
+	if offsetStr != "" {
+		o, err := strconv.Atoi(offsetStr)
+		if err == nil && o > 0 {
+			offset = o
+		}
+	}
+
+	// Query the database for students with pagination
+	sqlStatement := `SELECT id, name, phone, address FROM Student LIMIT $1 OFFSET $2`
+	rows, err := database.PgxPool.Query(context.Background(), sqlStatement, limit, offset)
 	if err != nil {
 		log.Error().Err(err).Caller().Msg("Error querying the database for students")
 		w.WriteHeader(http.StatusInternalServerError)
@@ -77,6 +101,7 @@ func GetAllStudents(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(studentsJSON)
 }
+
 
 func GetStudent(w http.ResponseWriter, r *http.Request) {
 	// Get the student id from the URL
