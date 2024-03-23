@@ -44,6 +44,9 @@ func CreateNewStudent(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(`{"message":"New student created"}`))
 }
 
+// GetAllStudents is a handler function that returns all details of all students.
+// It reads the query parameters for pagination and sorting.
+// It queries the database for students with pagination and returns the result as JSON.
 func GetAllStudents(w http.ResponseWriter, r *http.Request) {
 	// Parse query parameters for pagination
 	limit := 10 // Default number of items per page
@@ -117,7 +120,8 @@ func GetAllStudents(w http.ResponseWriter, r *http.Request) {
 	w.Write(studentsJSON)
 }
 
-
+// GetStudent is a handler function that returns the details of a student with the given id.
+// It reads the student id from the URL path params and queries the database for the student.
 func GetStudent(w http.ResponseWriter, r *http.Request) {
 	// Get the student id from the URL
 	studentID := chi.URLParam(r, "id")
@@ -153,6 +157,8 @@ func GetStudent(w http.ResponseWriter, r *http.Request) {
 	w.Write(studentJSON)
 }
 
+// DeleteStudent is a handler function that deletes a student with the given id.
+// It reads the student id from the URL path params and deletes the student from the database.
 func DeleteStudent(w http.ResponseWriter, r *http.Request) {
 	// Get the student id from the URL
 	studentID := chi.URLParam(r, "id")
@@ -169,7 +175,8 @@ func DeleteStudent(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-
+// UpdateStudent is a handler function that updates the details of a student with the given id. Update is not partial.
+// It reads the student id from the URL path params and the updated student details from the request body.
 func UpdateStudent(w http.ResponseWriter, r *http.Request) {
 	// Get the student id from the URL
 	studentID := chi.URLParam(r, "id")
